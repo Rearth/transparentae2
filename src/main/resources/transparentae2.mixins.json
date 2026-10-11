@@ -5,14 +5,17 @@
   "mixins": [
     "AEBasePartMixin",
     "CraftingCpuLogicMixin",
-    "NetworkStorageMixin"
+    "NetworkStorageMixin",
+    "TerminalMenuMixin",
+    "TerminalMenuActionsMixin"
   ],
   "client": [
     "client.CableBuilderMixin",
     "client.CableBusContainerMixin",
     "client.CableBusModelMixin",
     "client.CableBusRenderStateMixin",
-    "client.CubeBuilderMixin"
+    "client.CubeBuilderMixin",
+    "client.TerminalScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

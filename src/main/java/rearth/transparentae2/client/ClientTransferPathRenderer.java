@@ -23,6 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import appeng.api.stacks.AEItemKey;
+import rearth.transparentae2.Config;
 import rearth.transparentae2.network.TransferPathPayload;
 
 public final class ClientTransferPathRenderer {
@@ -36,7 +37,7 @@ public final class ClientTransferPathRenderer {
     }
 
     public static void add(TransferPathPayload payload) {
-        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean()) {
+        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean() || !Config.ENABLE_TRANSFER_PATHS.getAsBoolean()) {
             TRANSFERS.clear();
             return;
         }
@@ -56,7 +57,7 @@ public final class ClientTransferPathRenderer {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             return;
         }
-        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean()) {
+        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean() || !Config.ENABLE_TRANSFER_PATHS.getAsBoolean()) {
             TRANSFERS.clear();
             return;
         }

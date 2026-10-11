@@ -4,5 +4,16 @@
   "item.transparentae2.transparent_smart_dense_cable": "Transparent ME Dense Smart Cable",
   "item.transparentae2.transparent_covered_dense_cable": "Transparent ME Dense Covered Cable",
   "message.transparentae2.cable_treatment_applied": "Cable made transparent",
-  "message.transparentae2.cable_treatment_removed": "Cable transparency removed"
+  "message.transparentae2.cable_treatment_removed": "Cable transparency removed",
+  "gui.transparentae2.network_rendering": "Network item animations",
+  "gui.transparentae2.network_rendering.enabled": "Enabled for this ME network. Click to disable. Requires client and server rendering settings to be enabled.",
+  "gui.transparentae2.network_rendering.disabled": "Disabled for this ME network. Click to enable. Requires client and server rendering settings to be enabled.",
+  "config.transparentae2.enableTransferPaths": "Enable transfer paths",
+  "config.transparentae2.enableTransferPaths.tooltip": "Calculate ME network item transfer paths and send them to nearby players for animation. Disabling this stops path calculation for all networks.",
+  "config.transparentae2.renderTransferItems": "Render moving items",
+  "config.transparentae2.renderTransferItems.tooltip": "Show moving items inside ME cables. Requires transfer paths to be enabled on the server and animations to be enabled for the ME network.",
+  "config.transparentae2.itemMovementSpeed": "Item movement speed",
+  "config.transparentae2.itemMovementSpeed.tooltip": "Animation speed in blocks per second. This only changes the visual animation speed.",
+  "config.transparentae2.maxTransfers": "Maximum item animations",
+  "config.transparentae2.maxTransfers.tooltip": "Maximum number of recent item transfer animations kept by the client. Lower values reduce rendering work on busy networks."
 }

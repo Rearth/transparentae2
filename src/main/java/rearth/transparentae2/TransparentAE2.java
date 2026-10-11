@@ -9,6 +9,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
+import appeng.api.networking.GridServices;
 import rearth.transparentae2.init.ModDataComponents;
 import rearth.transparentae2.init.ModItems;
 import rearth.transparentae2.network.TransferPathNetworking;
@@ -19,6 +20,7 @@ public class TransparentAE2 {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TransparentAE2(IEventBus modEventBus, ModContainer modContainer) {
+        GridServices.register(NetworkRenderService.class, NetworkRenderService.class);
         ModDataComponents.COMPONENTS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         modEventBus.addListener(ModItems::addCreativeTabContents);
