@@ -15,6 +15,8 @@ transfer still happens instantly. The moving item is only a visual effect.
 - Adds a reusable Cable Transparency Applicator Item. Use it on a smart or dense cable to show items through
   that cable. Use it again to remove the treatment.
 - Adds ready-made transparent smart, dense smart, and dense covered cable items.
+- Adds a network item animation toggle to the terminal toolbar, including crafting, pattern encoding,
+  pattern access, and wireless terminals.
 
 ## What it does not do
 
@@ -48,6 +50,16 @@ Client configuration:
 - `renderTransferItems` enables or disables moving item animations.
 - `itemMovementSpeed` changes the animation speed.
 - `maxTransfers` limits how many recent animations the client keeps.
+
+Network setting:
+
+- The terminal toolbar's **Network item animations** button enables or disables animations for the
+  entire connected ME network, for every player. It defaults to enabled. Animations require this
+  setting, `enableTransferPaths`, and `renderTransferItems` to all be enabled.
+- The setting is saved with AE2's grid node data and survives world reloads. Split networks inherit
+  the setting; when networks merge, the receiving network keeps its setting.
+- Disabling the setting stops new animations; existing animations finish naturally. Portable storage
+  cells and disconnected wireless terminals have no network toggle.
 
 ## Credits
 

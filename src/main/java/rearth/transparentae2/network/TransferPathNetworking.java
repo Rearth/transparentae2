@@ -9,6 +9,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import appeng.api.networking.IGridNode;
+import rearth.transparentae2.Config;
+import rearth.transparentae2.NetworkRenderService;
 
 public final class TransferPathNetworking {
     private static final double VIEW_DISTANCE_SQUARED = 128.0 * 128.0;
@@ -21,7 +23,7 @@ public final class TransferPathNetworking {
     }
 
     public static void send(TransferPathPayload payload, IGridNode anchor) {
-        if (anchor == null) {
+        if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || !NetworkRenderService.isEnabled(anchor)) {
             return;
         }
 

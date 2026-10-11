@@ -1,6 +1,7 @@
 package rearth.transparentae2;
 
 import org.slf4j.Logger;
+import appeng.api.networking.GridServices;
 
 import com.mojang.logging.LogUtils;
 
@@ -19,6 +20,7 @@ public class TransparentAE2 {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public TransparentAE2(IEventBus modEventBus, ModContainer modContainer) {
+        GridServices.register(NetworkRenderService.class, NetworkRenderService.class);
         ModDataComponents.COMPONENTS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         modEventBus.addListener(ModItems::addCreativeTabContents);

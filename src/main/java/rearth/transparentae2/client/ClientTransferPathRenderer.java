@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import appeng.api.stacks.AEItemKey;
 import rearth.transparentae2.TransparentAE2;
+import rearth.transparentae2.Config;
 import rearth.transparentae2.network.TransferPathPayload;
 
 public final class ClientTransferPathRenderer {
@@ -41,7 +42,7 @@ public final class ClientTransferPathRenderer {
     }
 
     public static void add(TransferPathPayload payload) {
-        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean()) {
+        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean() || !Config.ENABLE_TRANSFER_PATHS.getAsBoolean()) {
             TRANSFERS.clear();
             return;
         }
@@ -58,7 +59,7 @@ public final class ClientTransferPathRenderer {
     }
 
     public static void extract(ExtractLevelRenderStateEvent event) {
-        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean()) {
+        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean() || !Config.ENABLE_TRANSFER_PATHS.getAsBoolean()) {
             TRANSFERS.clear();
             return;
         }
@@ -110,7 +111,7 @@ public final class ClientTransferPathRenderer {
     }
 
     public static void submitItems(SubmitCustomGeometryEvent event) {
-        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean()) {
+        if (!ClientConfig.RENDER_TRANSFER_ITEMS.getAsBoolean() || !Config.ENABLE_TRANSFER_PATHS.getAsBoolean()) {
             return;
         }
 

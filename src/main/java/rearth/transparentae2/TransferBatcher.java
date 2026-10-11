@@ -21,7 +21,7 @@ final class TransferBatcher {
             long amount,
             IGridNode endpoint,
             boolean controllerFirst) {
-        if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || endpoint == null) {
+        if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || !NetworkRenderService.isEnabled(endpoint)) {
             return;
         }
         enqueue(new BatchKey(kind, item, new SinglePathRequest(endpoint, controllerFirst)), amount);
@@ -32,7 +32,8 @@ final class TransferBatcher {
             long amount,
             IGridNode cpu,
             IGridNode provider) {
-        if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || (cpu == null && provider == null)) {
+        if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean()
+                || !NetworkRenderService.isEnabled(cpu != null ? cpu : provider)) {
             return;
         }
         enqueue(new BatchKey(PathKind.CRAFTING, item, new CraftingPathRequest(cpu, provider)), amount);
@@ -58,6 +59,9 @@ final class TransferBatcher {
         for (var entry : transfers.entrySet()) {
             var key = entry.getKey();
             try {
+                if (!NetworkRenderService.isEnabled(key.path.anchor())) {
+                    continue;
+                }
                 var path = paths.computeIfAbsent(key.path, PathRequest::resolve);
                 TransferLogger.handleResolvedPath(
                         key.kind,
