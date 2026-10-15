@@ -26,7 +26,7 @@ public final class TransferLogger {
         try {
             if (amount > 0 && what instanceof AEItemKey item) {
                 var kind = source.machine().orElse(null) instanceof ImportBusPart ? PathKind.IMPORT : PathKind.INSERT;
-                if (TransparentAE2.LOGGER.isDebugEnabled()) {
+                if (isTransferLoggingEnabled()) {
                     log(kind.name(), item, amount, sourceEndpoint(source, true), NETWORK);
                 }
                 TransferBatcher.enqueue(kind, item, amount, sourceNode(source), false);
@@ -40,7 +40,7 @@ public final class TransferLogger {
         try {
             if (amount > 0 && what instanceof AEItemKey item) {
                 var kind = source.machine().orElse(null) instanceof ExportBusPart ? PathKind.EXPORT : PathKind.EXTRACT;
-                if (TransparentAE2.LOGGER.isDebugEnabled()) {
+                if (isTransferLoggingEnabled()) {
                     log(kind.name(), item, amount, NETWORK, sourceEndpoint(source, false));
                 }
                 TransferBatcher.enqueue(kind, item, amount, sourceNode(source), true);
@@ -53,7 +53,7 @@ public final class TransferLogger {
     public static void logCraftingDispatch(AEKey what, long amount, IGridNode cpu, IGridNode provider) {
         try {
             if (amount > 0 && what instanceof AEItemKey item) {
-                if (TransparentAE2.LOGGER.isDebugEnabled()) {
+                if (isTransferLoggingEnabled()) {
                     log("CRAFTING", item, amount, "crafting CPU",
                             "crafting provider " + describeNode(provider));
                 }
@@ -73,7 +73,11 @@ public final class TransferLogger {
     }
 
     public static boolean shouldObserveCrafting() {
-        return Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || TransparentAE2.LOGGER.isDebugEnabled();
+        return Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || isTransferLoggingEnabled();
+    }
+
+    private static boolean isTransferLoggingEnabled() {
+        return Config.ENABLE_TRANSFER_LOGGING.getAsBoolean() && TransparentAE2.LOGGER.isDebugEnabled();
     }
 
     static void handleResolvedPath(
@@ -86,7 +90,7 @@ public final class TransferLogger {
             return;
         }
 
-        if (TransparentAE2.LOGGER.isDebugEnabled()) {
+        if (isTransferLoggingEnabled()) {
             var itemId = BuiltInRegistries.ITEM.getKey(item.getItem());
             TransparentAE2.LOGGER.debug("[AE2 PATH/{}] {}x {} | {}", kind, amount, itemId, path.format());
         }
