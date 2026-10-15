@@ -10,6 +10,8 @@
   "gui.transparentae2.network_rendering.disabled": "Disabled for this ME network. Click to enable. Requires client and server rendering settings to be enabled.",
   "config.transparentae2.enableTransferPaths": "Enable transfer paths",
   "config.transparentae2.enableTransferPaths.tooltip": "Calculate ME network item transfer paths and send them to nearby players for animation. Disabling this stops path calculation for all networks.",
+  "config.transparentae2.enableTransferLogging": "Enable transfer logging",
+  "config.transparentae2.enableTransferLogging.tooltip": "Log each item transfer and resolved path at DEBUG level. Requires DEBUG logging and can produce very large logs. Does not affect animations.",
   "config.transparentae2.renderTransferItems": "Render moving items",
   "config.transparentae2.renderTransferItems.tooltip": "Show moving items inside ME cables. Requires transfer paths to be enabled on the server and animations to be enabled for the ME network.",
   "config.transparentae2.itemMovementSpeed": "Item movement speed",

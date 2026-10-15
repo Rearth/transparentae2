@@ -41,9 +41,35 @@ on the server level, or the client can disable the rendering. Both can be toggle
 
 ## Configuration
 
-Server configuration:
+Server configuration (`config/transparentae2-server.toml` in the server directory; a world-specific
+`<world>/serverconfig/transparentae2-server.toml` overrides it if present):
 
 - `enableTransferPaths` enables or disables route calculation and animation packets.
+- `enableTransferLogging` enables per-transfer and resolved-path DEBUG messages. Defaults to `false`,
+  even when the server enables DEBUG logging. This is independent of animations. Enable only while
+  troubleshooting: busy networks can generate very large logs. Resolved-path messages also require
+  transfer paths and network animations to be enabled.
+
+To silence transfer logs, leave `enableTransferLogging = false`. To collect transfer diagnostics,
+set it to `true` and ensure DEBUG logging is enabled for
+`rearth.transparentae2.TransparentAE2` in the server's Log4j configuration. Stop the server before
+editing its configuration files, then restart it.
+
+NeoForge's default logging configuration writes DEBUG messages to `logs/debug.log`, even when the
+console only shows INFO messages. Server admins can set these JVM arguments in `user_jvm_args.txt`:
+
+```text
+-Dforge.logging.console.level=info
+-Dforge.logging.file.level=info
+-Dforge.logging.debugFile.level=info
+```
+
+These control the console, `logs/latest.log`, and `logs/debug.log`, respectively, for all mods using
+the default logging configuration. Use `debug` instead of `info` for more detail. Raising only the
+console threshold does not silence `debug.log`. To change only Transparent AE2's logger level, add
+`<Logger name="rearth.transparentae2.TransparentAE2" level="info"/>` inside `<Loggers>` in a custom
+Log4j configuration, preserving the server's existing appenders and other settings, and select that
+file with `-Dlog4j.configurationFile=log4j2.xml` in `user_jvm_args.txt`.
 
 Client configuration:
 
