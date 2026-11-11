@@ -39,27 +39,6 @@ final class TransferPathResolver {
         return ResolvedPath.of(new PathLeg(List.copyOf(points), List.copyOf(hops)));
     }
 
-    static ResolvedPath resolveCrafting(IGridNode cpu, IGridNode provider) {
-        var cpuRoute = routeToController(cpu);
-        var providerRoute = routeToController(provider);
-
-        if (cpuRoute.failure != null || providerRoute.failure != null) {
-            return ResolvedPath.failed("CPU route="
-                    + failureOrOk(cpuRoute)
-                    + ", provider route="
-                    + failureOrOk(providerRoute));
-        }
-
-        var providerPoints = new ArrayList<>(providerRoute.points);
-        var providerHops = new ArrayList<>(providerRoute.hops);
-        Collections.reverse(providerPoints);
-        Collections.reverse(providerHops);
-
-        return ResolvedPath.of(
-                new PathLeg(cpuRoute.points, cpuRoute.hops),
-                new PathLeg(List.copyOf(providerPoints), List.copyOf(providerHops)));
-    }
-
     private static Route routeToController(IGridNode endpoint) {
         if (endpoint == null) {
             return Route.failed("endpoint has no grid node");
@@ -110,10 +89,6 @@ final class TransferPathResolver {
         }
 
         return new Route(List.copyOf(points), List.copyOf(hops), null);
-    }
-
-    private static String failureOrOk(Route route) {
-        return route.failure == null ? "ok" : route.failure;
     }
 
     private static PathPoint describe(IGridNode node) {
@@ -235,13 +210,7 @@ final class TransferPathResolver {
             if (failure != null) {
                 return "unavailable: " + failure;
             }
-            if (legs.size() == 1) {
-                return legs.getFirst().format();
-            }
-            return "CPU -> controller: "
-                    + legs.get(0).format()
-                    + " || controller -> provider: "
-                    + legs.get(1).format();
+            return legs.stream().map(PathLeg::format).collect(java.util.stream.Collectors.joining(" || "));
         }
 
         private static void addSegment(List<List<GlobalPos>> result, List<GlobalPos> segment) {

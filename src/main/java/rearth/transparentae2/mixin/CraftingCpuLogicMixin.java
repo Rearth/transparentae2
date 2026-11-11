@@ -54,10 +54,9 @@ abstract class CraftingCpuLogicMixin {
         var accepted = provider.pushPattern(pattern, inputs);
         if (accepted) {
             try {
-                var cpuNode = cluster.getNode();
                 var providerNode = findProviderNode(provider);
                 for (var stack : transferred) {
-                    TransferLogger.logCraftingDispatch(stack.what(), stack.amount(), cpuNode, providerNode);
+                    TransferLogger.logCraftingDispatch(stack.what(), stack.amount(), providerNode);
                 }
             } catch (RuntimeException e) {
                 TransparentAE2.LOGGER.warn("Failed to observe an AE2 crafting dispatch", e);

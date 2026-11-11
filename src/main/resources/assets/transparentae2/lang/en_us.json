@@ -14,8 +14,8 @@
   "config.transparentae2.enableTransferLogging.tooltip": "Log each item transfer and resolved path at DEBUG level. Requires DEBUG logging and can produce very large logs. Does not affect animations.",
   "config.transparentae2.renderTransferItems": "Render moving items",
   "config.transparentae2.renderTransferItems.tooltip": "Show moving items inside ME cables. Requires transfer paths to be enabled on the server and animations to be enabled for the ME network.",
-  "config.transparentae2.itemMovementSpeed": "Item movement speed",
-  "config.transparentae2.itemMovementSpeed.tooltip": "Animation speed in blocks per second. This only changes the visual animation speed.",
+  "config.transparentae2.itemMovementSpeed": "Nearby item movement speed",
+  "config.transparentae2.itemMovementSpeed.tooltip": "Visual speed within 8 blocks of the camera, in blocks per second. Smoothly increases to 100 at 64 blocks. Camera position is captured when the animation starts. Longer routes are sped up to finish within 3 seconds.",
   "config.transparentae2.maxTransfers": "Maximum item animations",
   "config.transparentae2.maxTransfers.tooltip": "Maximum number of recent item transfer animations kept by the client. Lower values reduce rendering work on busy networks."
 }
