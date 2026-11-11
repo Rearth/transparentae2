@@ -24,19 +24,7 @@ final class TransferBatcher {
         if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean() || !NetworkRenderService.isEnabled(endpoint)) {
             return;
         }
-        enqueue(new BatchKey(kind, item, new SinglePathRequest(endpoint, controllerFirst)), amount);
-    }
-
-    static void enqueueCrafting(
-            AEItemKey item,
-            long amount,
-            IGridNode cpu,
-            IGridNode provider) {
-        if (!Config.ENABLE_TRANSFER_PATHS.getAsBoolean()
-                || !NetworkRenderService.isEnabled(cpu != null ? cpu : provider)) {
-            return;
-        }
-        enqueue(new BatchKey(PathKind.CRAFTING, item, new CraftingPathRequest(cpu, provider)), amount);
+        enqueue(new BatchKey(kind, item, new PathRequest(endpoint, controllerFirst)), amount);
     }
 
     private static void enqueue(BatchKey key, long amount) {
@@ -82,26 +70,18 @@ final class TransferBatcher {
     private record BatchKey(PathKind kind, AEItemKey item, PathRequest path) {
     }
 
-    private sealed interface PathRequest permits SinglePathRequest, CraftingPathRequest {
-        TransferPathResolver.ResolvedPath resolve();
-
-        IGridNode anchor();
-    }
-
-    private record SinglePathRequest(IGridNode endpoint, boolean controllerFirst) implements PathRequest {
-        @Override
+    private record PathRequest(IGridNode endpoint, boolean controllerFirst) {
         public TransferPathResolver.ResolvedPath resolve() {
             return TransferPathResolver.resolve(endpoint, controllerFirst);
         }
 
-        @Override
         public IGridNode anchor() {
             return endpoint;
         }
 
         @Override
         public boolean equals(Object other) {
-            return other instanceof SinglePathRequest request
+            return other instanceof PathRequest request
                     && endpoint == request.endpoint
                     && controllerFirst == request.controllerFirst;
         }
@@ -109,30 +89,6 @@ final class TransferBatcher {
         @Override
         public int hashCode() {
             return 31 * System.identityHashCode(endpoint) + Boolean.hashCode(controllerFirst);
-        }
-    }
-
-    private record CraftingPathRequest(IGridNode cpu, IGridNode provider) implements PathRequest {
-        @Override
-        public TransferPathResolver.ResolvedPath resolve() {
-            return TransferPathResolver.resolveCrafting(cpu, provider);
-        }
-
-        @Override
-        public IGridNode anchor() {
-            return cpu != null ? cpu : provider;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            return other instanceof CraftingPathRequest request
-                    && cpu == request.cpu
-                    && provider == request.provider;
-        }
-
-        @Override
-        public int hashCode() {
-            return 31 * System.identityHashCode(cpu) + System.identityHashCode(provider);
         }
     }
 }

@@ -3,7 +3,9 @@
 Transparent AE2 makes item movement inside an Applied Energistics 2 network visible.
 
 Items are shown moving through AE2 glass cables and specially treated smart or dense cables. The
-animation follows the route that AE2 assigned between a machine and the controller. The real item
+animation follows the route that AE2 assigns between a machine and the controller. Crafting inputs
+travel from the controller to the pattern provider; returned items travel back toward the controller.
+CPU inventory staging does not produce additional animations. The real item
 transfer still happens instantly; the moving item is only a visual effect.
 
 ## Features
@@ -74,7 +76,11 @@ file with `-Dlog4j.configurationFile=log4j2.xml` in `user_jvm_args.txt`.
 Client configuration:
 
 - `renderTransferItems` enables or disables moving item animations.
-- `itemMovementSpeed` changes the animation speed.
+- `itemMovementSpeed` sets the nearby animation speed (default: 6 blocks/second). Each animation
+  captures the current camera position at creation. Segment speeds stay at this minimum within
+  8 blocks, then increase along a smooth curve to 100 blocks/second at 64 blocks and beyond.
+  Transfers that would take longer than 3 seconds have all segment speeds increased proportionally
+  to finish within that limit, even if this exceeds 100 blocks/second.
 - `maxTransfers` limits how many recent animations the client keeps.
 
 The client settings are available from Transparent AE2's entry in NeoForge's Mods screen.

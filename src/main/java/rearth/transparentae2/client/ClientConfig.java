@@ -11,7 +11,8 @@ public final class ClientConfig {
             .define("renderTransferItems", true);
 
     public static final ModConfigSpec.DoubleValue ITEM_MOVEMENT_SPEED = BUILDER
-            .comment("Movement speed of rendered transfer items in blocks per second.")
+            .comment("Near-camera movement speed in blocks per second. Speed smoothly increases up to 100 farther away.",
+                    "Transfers exceeding three seconds are sped up further to finish within that limit.")
             .translation("config.transparentae2.itemMovementSpeed")
             .defineInRange("itemMovementSpeed", 6.0, 0.1, 100.0);
 

@@ -5,6 +5,7 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
+import appeng.blockentity.crafting.CraftingBlockEntity;
 import appeng.parts.AEBasePart;
 import appeng.parts.automation.ExportBusPart;
 import appeng.parts.automation.ImportBusPart;
@@ -29,7 +30,9 @@ public final class TransferLogger {
                 if (isTransferLoggingEnabled()) {
                     log(kind.name(), item, amount, sourceEndpoint(source, true), NETWORK);
                 }
-                TransferBatcher.enqueue(kind, item, amount, sourceNode(source), false);
+                if (!(source.machine().orElse(null) instanceof CraftingBlockEntity)) {
+                    TransferBatcher.enqueue(kind, item, amount, sourceNode(source), false);
+                }
             }
         } catch (RuntimeException e) {
             TransparentAE2.LOGGER.warn("Failed to observe AE2 network insertion", e);
@@ -43,21 +46,24 @@ public final class TransferLogger {
                 if (isTransferLoggingEnabled()) {
                     log(kind.name(), item, amount, NETWORK, sourceEndpoint(source, false));
                 }
-                TransferBatcher.enqueue(kind, item, amount, sourceNode(source), true);
+                // CPU inventory staging is represented by the provider dispatch instead.
+                if (!(source.machine().orElse(null) instanceof CraftingBlockEntity)) {
+                    TransferBatcher.enqueue(kind, item, amount, sourceNode(source), true);
+                }
             }
         } catch (RuntimeException e) {
             TransparentAE2.LOGGER.warn("Failed to observe AE2 network extraction", e);
         }
     }
 
-    public static void logCraftingDispatch(AEKey what, long amount, IGridNode cpu, IGridNode provider) {
+    public static void logCraftingDispatch(AEKey what, long amount, IGridNode provider) {
         try {
             if (amount > 0 && what instanceof AEItemKey item) {
                 if (isTransferLoggingEnabled()) {
-                    log("CRAFTING", item, amount, "crafting CPU",
+                    log("CRAFTING", item, amount, NETWORK,
                             "crafting provider " + describeNode(provider));
                 }
-                TransferBatcher.enqueueCrafting(item, amount, cpu, provider);
+                TransferBatcher.enqueue(PathKind.CRAFTING, item, amount, provider, true);
             }
         } catch (RuntimeException e) {
             TransparentAE2.LOGGER.warn("Failed to observe AE2 crafting dispatch", e);
